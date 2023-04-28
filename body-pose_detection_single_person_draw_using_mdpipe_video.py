@@ -9,8 +9,8 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
 # Open the video file
-sample1 = cv2.VideoCapture("sample4.mp4")
-sample2 = cv2.VideoCapture("sample5.mp4")
+sample1 = cv2.VideoCapture("sample1.mp4")
+sample2 = cv2.VideoCapture("sample4.mp4")
 
 # Get the video dimensions
 width1 = int(sample1.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -42,13 +42,27 @@ while True:
     landmark1 = []
     landmark2 = []
     
-    #for i in range(33):
-    #    marki = results1.pose_landmarks.landmark[i]
-    #    landmark1 += [(marki.x,marki.y,marki.z)]
+    for i in range(33):
+        if i>0 & i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
+           continue
+        if i>16 & i<23: # 17,18,19,20,21,22 점 제외
+            continue
+        if i>28 & i<33: # 29,30,31,32 점 제외
+            continue
+        
+        marki = results1.pose_landmarks.landmark[i]
+        landmark1 += [(marki.x,marki.y,marki.z)]
     
-    #for i in range(33):
-    #    marki = results2.pose_landmarks.landmark[i]
-        #landmark2 += [(marki.x,marki.y,marki.z)]
+    for i in range(33):
+        if i>0 & i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
+           continue
+        if i>16 & i<23: # 17,18,19,20,21,22 점 제외
+            continue
+        if i>28 & i<33: # 29,30,31,32 점 제외
+            continue
+
+        marki = results2.pose_landmarks.landmark[i]
+        landmark2 += [(marki.x,marki.y,marki.z)]
         
     data1+= [landmark1]
     data2+= [landmark2]
@@ -78,4 +92,4 @@ while True:
 sample1.release()
 sample2.release()
 
-#print(data1[0][1])
+print(data1[0][1])
