@@ -73,7 +73,7 @@ while True:
         landmark1 += [(marki.x,marki.y,marki.z)]
     
     for i in range(33):
-        if i>1 & i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
+        if i>0 & i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
            continue
         elif i>16 & i<23: # 17,18,19,20,21,22 점 제외
             continue
