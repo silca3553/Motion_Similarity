@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import math
 
 # Load MediaPipe pose model
 mp_drawing = mp.solutions.drawing_utils
@@ -25,18 +26,15 @@ framedata2 = [] #total video2 vector data by
  
 # 두 node를 넣으면 벡터로 변환하여 리턴하는 함수
 def makevector(pointA,pointB):
-        vec1 = np.array(pointA)
-        vec2 = np.array(pointB)
-
         #calculate vector between the two points (큰 노드에서 작은 노드로)
-        vector = vec2-vec1
+        vector = pointB-pointA
         return vector
 
 # 두 vector data들의 cos 값 평균을 구하는 함수
 def cos_sum(vectordata1, vectordata2):
     cos = [ 0 for i in range(13) ] #초기화
-    for i in range(13):
-        cos[i] = abs( np.dot(vectordata1[i], vectordata2[i]) / (np.linalg.norm(vectordata1[i]) * np.linalg.norm(vectordata2[i])) )
+    for i,j in vectordata1,vectordata2:
+        cos[i] = abs( np.dot(i, j) / (np.linalg.norm(i) * np.linalg.norm(j)) )
         #코사인 절댓값 구하기
 
     return sum(cos)/13
@@ -63,30 +61,34 @@ while True:
     landmark2 = []
     
     for i in range(33):
-        if i>0 & i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
+        if i>0 and i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
            continue
-        if i>16 & i<23: # 17,18,19,20,21,22 점 제외
+        elif i>16 and i<23: # 17,18,19,20,21,22 점 제외
             continue
-        if i>28 & i<33: # 29,30,31,32 점 제외
+        elif i>28 and i<33: # 29,30,31,32 점 제외
             continue
+        
         marki = results1.pose_landmarks.landmark[i]
         landmark1 += [(marki.x,marki.y,marki.z)]
     
     for i in range(33):
-        if i>0 & i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
+        if i>0 and i<11: # 1,2,3,4,5,6,7,8,9,10 점 제외
            continue
-        elif i>16 & i<23: # 17,18,19,20,21,22 점 제외
+        elif i>16 and i<23: # 17,18,19,20,21,22 점 제외
             continue
-        elif i>28 & i<33: # 29,30,31,32 점 제외
+        elif i>28 and i<33: # 29,30,31,32 점 제외
             continue
 
         marki = results2.pose_landmarks.landmark[i]
         landmark2 += [(marki.x,marki.y,marki.z)]
         
+    landmark1 = np.array(landmark1)
+    landmark2 = np.array(landmark2)
+
     #13개의 vector를 저장하는 lists
     vectordata1 = [] # video 1의 것
     vectordata2 = [] # video 2의 것
-    
+
     #landmark1에 들어있는 점들로 벡터 만들어서 vectordata에 저장 (13개)
     vectordata1.append( makevector((landmark1[1] + landmark1[2])/2, landmark1[0]) )
     vectordata1.append( makevector(landmark1[5], landmark1[3]) )
@@ -116,7 +118,7 @@ while True:
     vectordata2.append( makevector(landmark2[12], landmark2[10]) )
     vectordata2.append( makevector(landmark2[11], landmark2[9]) )
     vectordata2.append( makevector(landmark2[9], landmark2[7]) )
-        
+    
     framedata1+= [vectordata1]
     framedata2+= [vectordata2]
     
@@ -142,6 +144,15 @@ while True:
     # if cv2.waitKey(1) & 0xFF == ord('q'):
     #     break
 
+def check_degree(i,j):
+    x = abs( np.dot(i,j ) / (np.linalg.norm(i) * np.linalg.norm(j)) )
+    return math.degrees(math.acos(x)) #두 벡터의 각도 차
+
+i = framedata1[0][3]
+j = framedata1[3][3]
+
+
+print( check_degree(framedata1[0][3],framedata2[30][3]) ) #video 1의 0번째 frame과 video 2의 30번째 frame의 3번째 vector의 각도 차 출력
 
 # Release the video file and close the window
 sample1.release()
