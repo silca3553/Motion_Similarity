@@ -132,27 +132,32 @@ while True:
     framedata1+= [vectordata1]
     framedata2+= [vectordata2]
     
-    
+    realresult1 = results1.pose_lanmarks
+    realresult2 = results2.pose_lanmarks
+    for i in range(33):
+        if(i>0 and i<11) or (i>16 and i<23) or (i>28 and i<33):
+            del realresult1.landmarks[i]
+            del realresult2.landmarks[i]
     
     # Draw the pose skeleton on the frame
-    # mp_drawing.draw_landmarks(frame1, results1.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-    #                           mp_drawing.DrawingSpec(color=(255, 0, 0)),
-    #                          mp_drawing.DrawingSpec(color=(0, 255, 0)))
+    mp_drawing.draw_landmarks(frame1, results1.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                               mp_drawing.DrawingSpec(color=(255, 0, 0)),
+                              mp_drawing.DrawingSpec(color=(0, 255, 0)))
     
-    # mp_drawing.draw_landmarks(frame2, results2.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-    #                           mp_drawing.DrawingSpec(color=(255, 0, 0)),
-    #                           mp_drawing.DrawingSpec(color=(0, 255, 0)))
+    mp_drawing.draw_landmarks(frame2, results2.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                               mp_drawing.DrawingSpec(color=(255, 0, 0)),
+                               mp_drawing.DrawingSpec(color=(0, 255, 0)))
     # Resize the frame
-    # resized_frame1 = cv2.resize(frame1,(width1//4,height1//4))
-    # resized_frame2 = cv2.resize(frame2,(width2//4,height2//4))
+    resized_frame1 = cv2.resize(frame1,(width1//4,height1//4))
+    resized_frame2 = cv2.resize(frame2,(width2//4,height2//4))
 
     # Show the frame
-    # cv2.imshow("Video1", resized_frame1)
-    # cv2.imshow("Video2", resized_frame2)
+    cv2.imshow("Video1", resized_frame1)
+    cv2.imshow("Video2", resized_frame2)
     
-    # Wait for the user to press 'q' to exit
-    # if cv2.waitKey(1) & 0xFF == ord('q'):
-    #     break
+    #Wait for the user to press 'q' to exit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 # Release the video file and close the window
 sample1.release()
