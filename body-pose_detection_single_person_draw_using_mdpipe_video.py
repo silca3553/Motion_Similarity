@@ -32,12 +32,21 @@ def makevector(pointA,pointB):
 
 # 두 vector data들의 cos 값 평균을 구하는 함수
 def cos_sum(vectordata1, vectordata2):
-    cos = [ 0 for i in range(13) ] #초기화
-    for i,j in vectordata1,vectordata2:
-        cos[i] = abs( np.dot(i, j) / (np.linalg.norm(i) * np.linalg.norm(j)) )
+    cos = [] #초기화
+    n = len(vectordata1)
+    for i in range(n):
+        x = vectordata1[i]
+        y = vectordata2[i]
+        cos.append(check_degree(x,y))
+        # cos.append( abs( np.dot(x, y) / (np.linalg.norm(x) * np.linalg.norm(y)) ) )
         #코사인 절댓값 구하기
 
-    return sum(cos)/13
+    return sum(cos)/n
+
+#두 벡터의 각도 차
+def check_degree(i,j):
+    x = abs( np.dot(i,j ) / (np.linalg.norm(i) * np.linalg.norm(j)) )
+    return math.degrees(math.acos( round(x,3) ))
 
 # Loop over each frame of the video 
 # 두 영상의 각 frame별 landmark들을 추출하여 리스트에 저장 (data1,data2)
@@ -47,6 +56,7 @@ while True:
     ret2, frame2 = sample2.read()
     
     if not ret1 or not ret2:
+        print("complete vector extraction!")
         break
     
     # Convert the frame from BGR to RGB
@@ -148,16 +158,7 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-def check_degree(i,j):
-    x = abs( np.dot(i,j ) / (np.linalg.norm(i) * np.linalg.norm(j)) )
-    return math.degrees(math.acos(x)) #두 벡터의 각도 차
-
-i = framedata1[0][3]
-j = framedata1[3][3]
-
-
-print( check_degree(framedata1[0][3],framedata2[30][3]) ) #video 1의 0번째 frame과 video 2의 30번째 frame의 3번째 vector의 각도 차 출력
-
 # Release the video file and close the window
 sample1.release()
 sample2.release()
+print (vectordata1)
