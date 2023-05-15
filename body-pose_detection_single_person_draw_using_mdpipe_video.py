@@ -121,18 +121,17 @@ while True:
     
     framedata1+= [vectordata1]
     framedata2+= [vectordata2]
-    
-    realresult1 = results1.pose_lanmarks
-    realresult2 = results2.pose_lanmarks
-    for i in range(33):
-        if(i>0 and i<11) or (i>16 and i<23) or (i>28 and i<33):
-            del realresult1.landmarks[i]
-            del realresult2.landmarks[i]
-    
+
+    a = results1.pose_landmarks.landmark
+    b = [a[0], a[11], a[12], a[13], a[14], a[15], a[16], a[23], a[24], a[25], a[26], a[27], a[28]]
+    realresult1 = mp_pose.PoseLandmarkList(b)
+
+    print( type(realresult1))
+
     # Draw the pose skeleton on the frame
-    mp_drawing.draw_landmarks(frame1, results1.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                               mp_drawing.DrawingSpec(color=(255, 0, 0)),
-                              mp_drawing.DrawingSpec(color=(0, 255, 0)))
+    mp_drawing.draw_landmarks(frame1, realresult1, mp_pose.POSE_CONNECTIONS,
+                                mp_drawing.DrawingSpec(color=(255, 0, 0)),
+                                mp_drawing.DrawingSpec(color=(0, 255, 0)))
     
     mp_drawing.draw_landmarks(frame2, results2.pose_landmarks, mp_pose.POSE_CONNECTIONS,
                                mp_drawing.DrawingSpec(color=(255, 0, 0)),
@@ -162,4 +161,3 @@ print( check_degree(framedata1[0][3],framedata2[30][3]) ) #video 1의 0번째 fr
 # Release the video file and close the window
 sample1.release()
 sample2.release()
-print (vectordata1)
