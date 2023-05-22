@@ -131,17 +131,18 @@ while True:
     
     framedata1+= [vectordata1]
     framedata2+= [vectordata2]
-
-    a = results1.pose_landmarks.landmark
-    b = [a[0], a[11], a[12], a[13], a[14], a[15], a[16], a[23], a[24], a[25], a[26], a[27], a[28]]
-    realresult1 = mp_pose.PoseLandmarkList(b)
-
-    print( type(realresult1))
-
+    
+    realresult1 = results1.pose_lanmarks
+    realresult2 = results2.pose_lanmarks
+    for i in range(33):
+        if(i>0 and i<11) or (i>16 and i<23) or (i>28 and i<33):
+            del realresult1.landmarks[i]
+            del realresult2.landmarks[i]
+    
     # Draw the pose skeleton on the frame
-    mp_drawing.draw_landmarks(frame1, realresult1, mp_pose.POSE_CONNECTIONS,
-                                mp_drawing.DrawingSpec(color=(255, 0, 0)),
-                                mp_drawing.DrawingSpec(color=(0, 255, 0)))
+    mp_drawing.draw_landmarks(frame1, results1.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                               mp_drawing.DrawingSpec(color=(255, 0, 0)),
+                              mp_drawing.DrawingSpec(color=(0, 255, 0)))
     
     mp_drawing.draw_landmarks(frame2, results2.pose_landmarks, mp_pose.POSE_CONNECTIONS,
                                mp_drawing.DrawingSpec(color=(255, 0, 0)),
@@ -161,4 +162,18 @@ while True:
 # Release the video file and close the window
 sample1.release()
 sample2.release()
-print (vectordata1)
+
+
+i = framedata1[5][3]
+j = framedata2[5][3]
+
+print( check_degree(i,j) ) #video 1의 0번째 frame과 video 2의 30번째 frame의 3번째 vector의 각도 차 출력
+
+
+import dtw
+
+i = [framedata1[i][3] for i in range(13)]
+j = [framedata2[i][3] for i in range(13)]
+
+#print(dtw.dtw(framedata1,framedata2,keep_internals=True,dist_method='cos_sum').distance)
+
