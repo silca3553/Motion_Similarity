@@ -1,6 +1,18 @@
 # Motion_Similairity
-Measure motion similarity between the two videos using "MediaPipe pose detection" and "DTW" for research on dance copyright.
+This project is implemented for the AR/VR design fabrication studio (CITE490K) course at POSTECH with [1MILLION](https://www.1milliondance.com).
+#### Measure motion similarity between the two videos using [MediaPipe](https://chuoling.github.io/mediapipe/) pose detection AI and DTW(Dynamic Time Warping) algorithm for research on dance copyright.
+By using the DTW algorithm, it is possible to accurately compare the similarity between two dances, even if their video lengths, dance speeds, or starting times differ.
 
-<img src="https://github.com/silca3553/Motion_Similarity/assets/105369802/a723ac2e-3238-444c-9dfc-b649885f58bd"  width="504" height="320">
+<p align="center">
+<img src="https://github.com/user-attachments/assets/60325726-1892-4be7-9f1e-2e3e23a966d7"  width="600" height="300">
+</p>
 
-<img src="https://github.com/silca3553/Motion_Similarity/assets/105369802/e61ba877-5257-4169-b0de-9826be548f07"  width="800" height="280">
+After extracting the key 13 vector data through pose estimation, the DRW algorithm is applied using cosine similarity to compare the dance similarity as a percentage.
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/ae4acb9f-4a6e-461f-a5ae-2c82952f786c"  width="700" height="200">
+</p>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/cfbda1f3-05eb-44f4-a7ba-4dea7f552b38"  width="600" height="300">
+</p>
