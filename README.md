@@ -14,5 +14,5 @@ After extracting the key 13 vector data through pose estimation, the DRW algorit
 </p>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/cfbda1f3-05eb-44f4-a7ba-4dea7f552b38"  width="600" height="300">
+<img src="https://github.com/user-attachments/assets/cfbda1f3-05eb-44f4-a7ba-4dea7f552b38"  width="700" height="400">
 </p>
